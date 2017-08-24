@@ -1,0 +1,250 @@
+{
+  "contract_name": "Splitter",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_newRecipients",
+          "type": "address[]"
+        }
+      ],
+      "name": "setRecipients",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "sender",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "destroy",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "maxRecipients",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "sendSplit",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": true,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "hasRecipients",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_sender",
+          "type": "address"
+        }
+      ],
+      "name": "setSender",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "recipients",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "_maxRecipients",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "constructor"
+    },
+    {
+      "payable": true,
+      "type": "fallback"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_sender",
+          "type": "address"
+        }
+      ],
+      "name": "LogSetSender",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_recipients",
+          "type": "address[]"
+        }
+      ],
+      "name": "LogSetRecipients",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "_sender",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_recipients",
+          "type": "address[]"
+        },
+        {
+          "indexed": false,
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "LogSplitSent",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x6060604052341561000c57fe5b60405160208061065483398101604052515b5b60008054600160a060020a03191633600160a060020a03161790555b60038190555b505b610602806100526000396000f3006060604052361561007d5763ffffffff60e060020a6000350416634e7602d3811461008657806367e404ce146100ed57806383197ef01461011957806388a130721461012b5780638da5cb5b1461014d578063aa92f2d814610179578063afcee50214610195578063ced32b0c146101b9578063d1bc76a1146101e9575b6100845b5b565b005b341561008e57fe5b6100d960048080359060200190820180359060200190808060200260200160405190810160405280939291908181526020018383602002808284375094965061021895505050505050565b604080519115158252519081900360200190f35b34156100f557fe5b6100fd6102e1565b60408051600160a060020a039092168252519081900360200190f35b341561012157fe5b6100846102f0565b005b341561013357fe5b61013b61031d565b60408051918252519081900360200190f35b341561015557fe5b6100fd610323565b60408051600160a060020a039092168252519081900360200190f35b6100d9610332565b604080519115158252519081900360200190f35b341561019d57fe5b6100d9610490565b604080519115158252519081900360200190f35b34156101c157fe5b6100d9600160a060020a036004351661049b565b604080519115158252519081900360200190f35b34156101f157fe5b6100fd600435610513565b60408051600160a060020a039092168252519081900360200190f35b6000805433600160a060020a039081169116146102355760006000fd5b600354825111156102465760006000fd5b8151610259906002906020850190610545565b5060408051602080825284518183015284517f27c9546f6961d3059e2eec04599a73821fdcd4059a7cf0e38c110ef4fc5cff5f93869392839291830191818601910280838382156102c5575b8051825260208311156102c557601f1990920191602091820191016102a5565b5050509050019250505060405180910390a15060015b5b919050565b600154600160a060020a031681565b60005433600160a060020a0390811691161461030c5760006000fd5b600054600160a060020a0316ff5b5b565b60035481565b600054600160a060020a031681565b6001546000908190819033600160a060020a039081169116146103555760006000fd5b600034116103635760006000fd5b6002546000901161037057fe5b6002543481151561037d57fe5b049150600090505b6002548110156103eb57600280548290811061039d57fe5b906000526020600020900160005b90546040516101009290920a9004600160a060020a0316906108fc8415029084906000818181858888f1935050505015156103e257fe5b5b600101610385565b600154604080516020810185905281815260028054928201839052600160a060020a03909316927f1578c075292a50e53b75fb7fa8be5044b70a717178050eed7a02fee13a27f4759290918691819060608201908590801561047657602002820191906000526020600020905b8154600160a060020a03168152600190910190602001808311610458575b5050935050505060405180910390a2600192505b5b505090565b600254600090115b90565b6000805433600160a060020a039081169116146104b85760006000fd5b60018054600160a060020a038416600160a060020a0319909116811790915560408051918252517f6932218d46d95d3b89d4ee59b90191115b4b7ef0146ce7c42b8abdf61fbb70239181900360200190a15060015b5b919050565b600280548290811061052157fe5b906000526020600020900160005b915054906101000a9004600160a060020a031681565b82805482825590600052602060002090810192821561059a579160200282015b8281111561059a5782518254600160a060020a031916600160a060020a03909116178255602090920191600190910190610565565b5b506105a79291506105ab565b5090565b61049891905b808211156105a7578054600160a060020a03191681556001016105b1565b5090565b905600a165627a7a72305820731f93e63803ee50caebd70d47d8e609df274f3c20e12ceae2cd41a7bb5c073b0029",
+  "networks": {
+    "1503600199097": {
+      "events": {
+        "0x6932218d46d95d3b89d4ee59b90191115b4b7ef0146ce7c42b8abdf61fbb7023": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_sender",
+              "type": "address"
+            }
+          ],
+          "name": "LogSetSender",
+          "type": "event"
+        },
+        "0x27c9546f6961d3059e2eec04599a73821fdcd4059a7cf0e38c110ef4fc5cff5f": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_recipients",
+              "type": "address[]"
+            }
+          ],
+          "name": "LogSetRecipients",
+          "type": "event"
+        },
+        "0x1578c075292a50e53b75fb7fa8be5044b70a717178050eed7a02fee13a27f475": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_sender",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_recipients",
+              "type": "address[]"
+            },
+            {
+              "indexed": false,
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "LogSplitSent",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xee2d47f1e4bc47ea2207a6e4017f2e67d38faf8a",
+      "updated_at": 1503600213362
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1503600213362
+}
