@@ -1,0 +1,42 @@
+<html>
+<head>
+  <title>Splitter</title>
+  <link href="./index.css" rel="stylesheet" type="text/css">
+  <script src="./web3.js"></script>
+  <script src="./index.js"></script>
+</head>
+<body>
+  <h1>Splitter</h1>
+  <button class="destroy" id="destroy" onclick="App.destroy()">
+    Destroy splitter
+  </button>
+  <button class="create" id="create" onclick="App.create()" hidden>
+    Create new splitter
+  </button>
+  <!-- <input type="text" id="sender-name" placeholder="Name"> -->
+  <div class="app">
+    <hr>
+    <input type="text" id="send" placeholder="amount in ETH e.g. 10">
+    <input type="text" id="denominator" placeholder="e.g. ether">
+    <button id="send-button" onclick="App.send()">Send</button>
+    <h5>Sender</h5>
+    <div class="sender" id="sender">
+      <p class="address" id="sender-address"></p>
+      <p class="balance" id="sender-balance"></p>
+    </div>
+    <input type="text" id="sender-address-input" placeholder="Address">
+    <button class="edit-sender" id="edit-sender" onclick="App.replaceSender()">
+      Edit sender
+    </button>
+    <br>
+    <br>
+    <textarea id="recipient-address-input" height="50" placeholder="Comma separated addresses"></textarea>
+    <button id="edit-recipient" class="edit-recipient" onclick="App.replaceRecipients()">
+      Edit recipients
+    </button>
+    <h5>Recipients</h5>
+    <div class="recipients" id="recipients">
+    </div>
+  </div>
+</body>
+</html>
