@@ -42,4 +42,14 @@ contract('Splitter', accounts => {
     });
   });
 
+  it('should keep the balance sent to it by the sender', () => {
+    return contractInstance.send(
+      recipients,
+      {from: sender, value: amountSent})
+    .then(txObj => {
+      var balance = web3.eth.getBalance(contractInstance.address);
+      assert.equal(
+        balance.toNumber(), amountSent, "The amount sent was not stored by the contract");
+    })
+  });
 });
