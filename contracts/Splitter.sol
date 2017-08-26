@@ -8,12 +8,12 @@ import { OwnedDestroyable } from './OwnedDestroyable.sol';
 */
 contract Splitter is OwnedDestroyable{
     address public sender;
-    address[] public recipients;
+    address[2] public recipients;
     uint public maxRecipients;
 
     event LogSetSender(address _sender);
-    event LogSetRecipients(address[] _recipients);
-    event LogSplitSent(address indexed _sender, address[] _recipients, uint _amount);
+    event LogSetRecipients(address[2] _recipients);
+    event LogSplitSent(address indexed _sender, address[2] _recipients, uint _amount);
 
     modifier onlySender {
       require(msg.sender == sender);
@@ -43,7 +43,7 @@ contract Splitter is OwnedDestroyable{
         return true;
     }
 
-    function setRecipients(address[] _newRecipients)
+    function setRecipients(address[2] _newRecipients)
         public
         onlyOwner
         returns(bool) {
