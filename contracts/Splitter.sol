@@ -9,7 +9,6 @@ import { OwnedDestroyable } from './OwnedDestroyable.sol';
 contract Splitter is OwnedDestroyable{
     address public sender;
     address[2] public recipients;
-    uint public maxRecipients;
 
     event LogSetSender(address indexed _sender);
     event LogSetRecipients(address[2] _recipients);
@@ -22,8 +21,7 @@ contract Splitter is OwnedDestroyable{
 
     function () payable {}
 
-    function Splitter(uint _maxRecipients, address _sender) {
-        maxRecipients = _maxRecipients;
+    function Splitter(address _sender) {
         sender = _sender;
     }
 
@@ -49,7 +47,6 @@ contract Splitter is OwnedDestroyable{
         onlyOwner
         returns(bool) {
 
-        require(_newRecipients.length <= maxRecipients);
         recipients = _newRecipients;
         LogSetRecipients(_newRecipients);
         return true;

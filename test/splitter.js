@@ -2,24 +2,15 @@ var Splitter = artifacts.require('./Splitter.sol');
 
 contract('Splitter', accounts => {
   var owner = accounts[0];
-  var maxRecipients = 2;
   var recipients = accounts.slice(2, 4);
   var sender = accounts[1];
   var contractInstance;
   var txobj;
 
   beforeEach(() => {
-    return Splitter.new(maxRecipients, sender, {from: owner})
+    return Splitter.new(sender, {from: owner})
     .then(instance => {
       contractInstance = instance;
-    });
-  });
-
-  it('should initialize splitter with maxRecipients', () => {
-    return contractInstance.maxRecipients()
-    .then(maxRecipients => {
-      assert.equal(
-        maxRecipients.toNumber(), maxRecipients, "Max recipients was not set!");
     });
   });
 
@@ -27,19 +18,6 @@ contract('Splitter', accounts => {
     return contractInstance.sender()
     .then(_sender => {
       assert.equal(_sender, sender, "Sender was not set!");
-    });
-  });
-
-// Add tests to check that error is thrown if more recipients are added
-  it('should receive a list of recipient no more than maxRecipients', () => {
-    return contractInstance.setRecipients(recipients, {from: owner})
-    .then(txObj => {
-      for(let i in Array.from(Array(maxRecipients).keys())) {
-        contractInstance.recipients(i)
-        .then(recipient => {
-          assert.equal(recipient, recipients[i], "Recipient address is not correct");
-        });
-      }
     });
   });
 
