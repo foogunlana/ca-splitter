@@ -8,11 +8,9 @@ import { OwnedDestroyable } from './OwnedDestroyable.sol';
 */
 contract Splitter is OwnedDestroyable{
     address public sender;
-    address[2] public recipients;
     mapping (address => uint) public balances;
 
     event LogSetSender(address indexed _sender);
-    event LogSetRecipients(address[2] _recipients);
     event LogSplitSent(address indexed _sender, address[2] _recipients, uint _amount);
 
     modifier onlySender {
@@ -26,13 +24,6 @@ contract Splitter is OwnedDestroyable{
         sender = _sender;
     }
 
-    function hasRecipients()
-      public
-      constant
-      returns(bool) {
-      return recipients.length > 0;
-    }
-
     function setSender(address _sender)
         public
         onlyOwner
@@ -40,16 +31,6 @@ contract Splitter is OwnedDestroyable{
 
         sender = _sender;
         LogSetSender(_sender);
-        return true;
-    }
-
-    function setRecipients(address[2] _newRecipients)
-        public
-        onlyOwner
-        returns(bool) {
-
-        recipients = _newRecipients;
-        LogSetRecipients(_newRecipients);
         return true;
     }
 
