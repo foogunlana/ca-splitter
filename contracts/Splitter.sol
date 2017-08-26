@@ -11,7 +11,7 @@ contract Splitter is OwnedDestroyable{
     address[2] public recipients;
     uint public maxRecipients;
 
-    event LogSetSender(address _sender);
+    event LogSetSender(address indexed _sender);
     event LogSetRecipients(address[2] _recipients);
     event LogSplitSent(address indexed _sender, address[2] _recipients, uint _amount);
 
