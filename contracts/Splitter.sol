@@ -22,8 +22,9 @@ contract Splitter is OwnedDestroyable{
 
     function () payable {}
 
-    function Splitter(uint _maxRecipients) {
+    function Splitter(uint _maxRecipients, address _sender) {
         maxRecipients = _maxRecipients;
+        sender = _sender;
     }
 
     function hasRecipients()
