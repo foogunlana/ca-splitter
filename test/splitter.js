@@ -1,5 +1,33 @@
 var Splitter = artifacts.require('./Splitter.sol');
 
+var expectedExceptionPromise = function (action, gasToUse) {
+  return new Promise(function (resolve, reject) {
+      try {
+        resolve(action());
+      } catch(e) {
+        reject(e);
+      }
+    })
+    .then(function (txn) {
+      // https://gist.github.com/xavierlepretre/88682e871f4ad07be4534ae560692ee6
+      return web3.eth.getTransactionReceiptMined(txn);
+    })
+    .then(function (receipt) {
+      // We are in Geth
+      assert.equal(receipt.gasUsed, gasToUse, "should have used all the gas");
+    })
+    .catch(function (e) {
+      if ((e + "").indexOf("invalid JUMP") || (e + "").indexOf("out of gas") > -1) {
+        // We are in TestRPC
+      } else if ((e + "").indexOf("please check your gas amount") > -1) {
+        // We are in Geth for a deployment
+      } else {
+        throw e;
+      }
+    });
+};
+
+
 contract('Splitter', accounts => {
   var owner = accounts[0];
   var recipients = accounts.slice(2, 4);
@@ -55,12 +83,24 @@ contract('Splitter', accounts => {
     });
   });
 
-// Add tests to check that error is thrown if not owner
   it('should allow only owner set sender', () => {
     return contractInstance.setSender(sender, {from: owner})
     .then(txObj => {
-      return;
-    });
+      var gasToUse = 5000000;
+      return expectedExceptionPromise(function () {
+        return contractInstance.setSender(
+          sender,
+          {from: sender, gas: gasToUse})
+      }, gasToUse);
+    })
+  });
+
+  it('should allow only sender send the split', () => {
+    var gasToUse = 5000000;
+    return expectedExceptionPromise(function () {
+      return contractInstance.sendSplit(
+        {from: owner, gas: gasToUse, value: amountSent})
+    }, gasToUse);
   });
 
   it('should keep the balance sent to it by the sender', () => {
