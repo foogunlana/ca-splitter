@@ -5,18 +5,18 @@ contract('Splitter', accounts => {
   var maxRecipients = 2;
   var recipients = accounts.slice(2, 4);
   var sender = accounts[1];
-  var contract;
+  var contractInstance;
   var txobj;
 
   beforeEach(() => {
     return Splitter.new(maxRecipients, {from: owner})
     .then(instance => {
-      contract = instance;
+      contractInstance = instance;
     });
   });
 
   it('should initialize splitter with maxRecipients', () => {
-    return contract.maxRecipients()
+    return contractInstance.maxRecipients()
     .then(maxRecipients => {
       assert.equal(
         maxRecipients.toNumber(), maxRecipients, "Max recipients was not set!");
@@ -25,10 +25,10 @@ contract('Splitter', accounts => {
 
 // Add tests to check that error is thrown if more recipients are added
   it('should receive a list of recipient no more than maxRecipients', () => {
-    return contract.setRecipients(recipients, {from: owner})
+    return contractInstance.setRecipients(recipients, {from: owner})
     .then(txObj => {
       for(let i in Array.from(Array(maxRecipients).keys())) {
-        contract.recipients(i)
+        contractInstance.recipients(i)
         .then(recipient => {
           assert.equal(recipient, recipients[i], "Recipient address is not correct");
         });
@@ -37,9 +37,9 @@ contract('Splitter', accounts => {
   });
 
   it('should set the sender to an address', () => {
-    return contract.setSender(sender, {from: owner})
+    return contractInstance.setSender(sender, {from: owner})
     .then(txObj => {
-      return contract.sender();
+      return contractInstance.sender();
     })
     .then(_sender => {
       assert.equal(_sender, sender, "Sender was not set correctly");
@@ -48,9 +48,9 @@ contract('Splitter', accounts => {
 
 // Add tests to check that error is thrown if not owner
   it('should allow only owner set sender and recipients', () => {
-    return contract.setRecipients(recipients, {from: owner})
+    return contractInstance.setRecipients(recipients, {from: owner})
     .then(txObj => {
-      return contract.setSender(sender, {from: owner})
+      return contractInstance.setSender(sender, {from: owner})
     })
     .then(txObj => {
       return;
@@ -65,11 +65,11 @@ contract('Splitter', accounts => {
       addr => amount/2 + web3.eth.getBalance(addr).toNumber());
 
     return Promise.all([
-      contract.setRecipients(recipients, {from: owner}),
-      contract.setSender(sender, {from: owner})
+      contractInstance.setRecipients(recipients, {from: owner}),
+      contractInstance.setSender(sender, {from: owner})
     ])
     .then(() => {
-      return contract.sendSplit({from: sender, value: amount});
+      return contractInstance.sendSplit({from: sender, value: amount});
     })
     .then(txObj => {
       var finalBalance = web3.eth.getBalance(sender).toNumber();
