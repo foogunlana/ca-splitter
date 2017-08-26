@@ -11,6 +11,7 @@ contract Splitter is OwnedDestroyable{
     mapping (address => uint) public balances;
 
     event LogSetSender(address indexed _sender);
+    event LogWithdrawal(address indexed _recipient);
     event LogSplitSent(address indexed _sender, address[2] _recipients, uint _amount);
 
     modifier onlySender {
@@ -51,5 +52,14 @@ contract Splitter is OwnedDestroyable{
         balances[_recipients[1]] = amountPerRecipient;
         LogSplitSent(msg.sender, _recipients, amountPerRecipient);
         return true;
+    }
+
+    function withdraw()
+      public
+      returns(bool) {
+
+      msg.sender.transfer(balances[msg.sender]);
+      LogWithdrawal(msg.sender);
+      return true;
     }
 }
