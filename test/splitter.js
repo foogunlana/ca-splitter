@@ -157,8 +157,8 @@ contract('Splitter', accounts => {
     .then(balances => {
       for(let i in balances) {
         assert.equal(
-          balances[i],
-          currentBalances[i],
+          balances[i].toNumber(),
+          currentBalances[i].toNumber(),
           "Recipient's balance was not appropriately credited");
       }
     });
