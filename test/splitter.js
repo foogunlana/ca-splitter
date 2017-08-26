@@ -42,28 +42,4 @@ contract('Splitter', accounts => {
     });
   });
 
-  it('should send money from sender to all recipients in equal amounts', () => {
-    var originalBalance = web3.eth.getBalance(sender).toNumber();
-    var amount = web3.toWei(1, 'ether');
-    var expectedFinalBalance = originalBalance - amount;
-    var expectedBalances = recipients.map(
-      addr => amount/2 + web3.eth.getBalance(addr).toNumber());
-
-    return Promise.all([
-      contractInstance.setRecipients(recipients, {from: owner}),
-      contractInstance.setSender(sender, {from: owner})
-    ])
-    .then(() => {
-      return contractInstance.sendSplit({from: sender, value: amount});
-    })
-    .then(txObj => {
-      var finalBalance = web3.eth.getBalance(sender).toNumber();
-      assert(
-        finalBalance < expectedFinalBalance, "Amount sent was not deducted from sender");
-      for(let i in recipients) {
-        let balance = web3.eth.getBalance(recipients[i]).toNumber();
-        assert.equal(balance, expectedBalances[i], "Recipients were not all credited with correct amount");
-      }
-    })
-  });
 });
