@@ -25,7 +25,7 @@ contract('Splitter', accounts => {
     });
   });
 
-  it('should have no owner after being destroyed', () => {
+  it('should have no contract code after being destroyed', () => {
     return contractInstance.destroy()
     .then(txObj => {
       return contractInstance.owner();
@@ -33,7 +33,7 @@ contract('Splitter', accounts => {
     .then(_owner => {
       assert.equal(
         web3.eth.getCode(contractInstance.address),
-        '0x',
+        '0x0',
         'The owner is not equal to 0 (empty address)');
     });
   });
