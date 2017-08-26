@@ -9,7 +9,7 @@ contract('Splitter', accounts => {
   var txobj;
 
   beforeEach(() => {
-    return Splitter.new(maxRecipients, {from: owner})
+    return Splitter.new(maxRecipients, sender, {from: owner})
     .then(instance => {
       contractInstance = instance;
     });
@@ -20,6 +20,13 @@ contract('Splitter', accounts => {
     .then(maxRecipients => {
       assert.equal(
         maxRecipients.toNumber(), maxRecipients, "Max recipients was not set!");
+    });
+  });
+
+  it('should initialize splitter with sender address', () => {
+    return contractInstance.sender()
+    .then(_sender => {
+      assert.equal(_sender, sender, "Sender was not set!");
     });
   });
 
