@@ -68,12 +68,14 @@ contract('Splitter', accounts => {
       recipients,
       {from: sender, value: amountSent})
     .then(txObj => {
-      var balance = web3.eth.getBalance(contractInstance.address);
+      return web3.eth.getBalance(contractInstance.address)
+      })
+    .then(balance => {
       assert.equal(
         balance.toNumber(),
         amountSent,
         "The amount sent was not stored by the contract");
-    })
+    });
   });
 
   it('should split sent amount in 2 and keep the change', () => {
