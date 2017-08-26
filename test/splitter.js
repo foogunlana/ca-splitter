@@ -18,7 +18,10 @@ contract('Splitter', accounts => {
   it('should set the owner to the contract creator', () => {
     return contractInstance.owner()
     .then(_owner => {
-      assert.equal(_owner, owner, 'The contract owner was not set to the initial creator');
+      assert.equal(
+        _owner,
+        owner,
+        'The contract owner was not set to the initial creator');
     });
   });
 
@@ -28,7 +31,10 @@ contract('Splitter', accounts => {
       return contractInstance.owner();
     })
     .then(_owner => {
-      assert.equal(_owner, '0x', 'The owner is not equal to 0 (empty address)');
+      assert.equal(
+        web3.eth.getCode(contractInstance.address),
+        '0x',
+        'The owner is not equal to 0 (empty address)');
     });
   });
 
@@ -64,7 +70,9 @@ contract('Splitter', accounts => {
     .then(txObj => {
       var balance = web3.eth.getBalance(contractInstance.address);
       assert.equal(
-        balance.toNumber(), amountSent, "The amount sent was not stored by the contract");
+        balance.toNumber(),
+        amountSent,
+        "The amount sent was not stored by the contract");
     })
   });
 
@@ -73,10 +81,17 @@ contract('Splitter', accounts => {
       recipients,
       {from: sender, value: amountSent + 1})
     .then(txObj => {
-      Promise.all(recipients.map(address => contractInstance.balances(address)))
+      Promise.all(
+        recipients.map(address => contractInstance.balances(address)))
       .then(balances => {
-        assert.equal(balances[0], amountSent / 2, "Half the amount sent was not stored for first recipient");
-        assert.equal(balances[1], amountSent / 2, "Half the amount sent was not stored for second recipient");
+        assert.equal(
+          balances[0],
+          amountSent / 2,
+          "Half the amount sent was not stored for first recipient");
+        assert.equal(
+          balances[1],
+          amountSent / 2,
+          "Half the amount sent was not stored for second recipient");
       })
     })
   });
