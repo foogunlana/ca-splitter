@@ -5,7 +5,7 @@ contract('Splitter', accounts => {
   var recipients = accounts.slice(2, 4);
   var sender = accounts[1];
   var contractInstance;
-  var amountSent = web3.toWei(10, 'ether');
+  var amountSent = parseInt(web3.toWei(1, 'ether'));
   var txobj;
 
   beforeEach(() => {
@@ -51,10 +51,10 @@ contract('Splitter', accounts => {
     })
   });
 
-  it('should store equal virtual balances (half of amount sent) for the recipients', () => {
+  it('should split sent amount in 2 and keep the change', () => {
     return contractInstance.sendSplit(
       recipients,
-      {from: sender, value: amountSent})
+      {from: sender, value: amountSent + 1})
     .then(txObj => {
       Promise.all(recipients.map(address => contractInstance.balances(address)))
       .then(balances => {
