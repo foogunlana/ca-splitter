@@ -44,7 +44,7 @@ contract('Splitter', accounts => {
   });
 
   it('should keep the balance sent to it by the sender', () => {
-    return contractInstance.send(
+    return contractInstance.sendSplit(
       recipients,
       {from: sender, value: amountSent})
     .then(txObj => {
@@ -55,13 +55,15 @@ contract('Splitter', accounts => {
   });
 
   it('should store equal virtual balances (half of amount sent) for the recipients', () => {
-    return contractInstance.send(
+    return contractInstance.sendSplit(
       recipients,
       {from: sender, value: amountSent})
     .then(txObj => {
-      var balances = recipients.map(address => contractInstance.balances(address));
-      assert.equal(balances[0], amountSent / 2, "Half the amount sent was not stored for first recipient");
-      assert.equal(balances[1], amountSent / 2, "Half the amount sent was not stored for second recipient");
+      Promise.all(recipients.map(address => contractInstance.balances(address)))
+      .then(balances => {
+        assert.equal(balances[0], amountSent / 2, "Half the amount sent was not stored for first recipient");
+        assert.equal(balances[1], amountSent / 2, "Half the amount sent was not stored for second recipient");
+      })
     })
   });
 });
