@@ -5,6 +5,7 @@ contract('Splitter', accounts => {
   var recipients = accounts.slice(2, 4);
   var sender = accounts[1];
   var contractInstance;
+  var amountSent = web3.toWei(10, 'ether');
   var txobj;
 
   beforeEach(() => {
