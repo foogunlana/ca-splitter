@@ -15,6 +15,23 @@ contract('Splitter', accounts => {
     });
   });
 
+  it('should set the owner to the contract creator', () => {
+    return contractInstance.owner()
+    .then(_owner => {
+      assert.equal(_owner, owner, 'The contract owner was not set to the initial creator');
+    });
+  });
+
+  it('should have no owner after being destroyed', () => {
+    return contractInstance.destroy()
+    .then(txObj => {
+      return contractInstance.owner();
+    })
+    .then(_owner => {
+      assert.equal(_owner, '0x', 'The owner is not equal to 0 (empty address)');
+    });
+  });
+
   it('should initialize splitter with sender address', () => {
     return contractInstance.sender()
     .then(_sender => {
