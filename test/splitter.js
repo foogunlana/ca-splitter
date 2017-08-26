@@ -59,7 +59,7 @@ contract('Splitter', accounts => {
       recipients,
       {from: sender, value: amountSent})
     .then(txObj => {
-      var balances = recipients.map(address => contractInstance.balances[address]);
+      var balances = recipients.map(address => contractInstance.balances(address));
       assert.equal(balances[0], amountSent / 2, "Half the amount sent was not stored for first recipient");
       assert.equal(balances[1], amountSent / 2, "Half the amount sent was not stored for second recipient");
     })
