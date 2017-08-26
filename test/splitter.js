@@ -137,4 +137,30 @@ contract('Splitter', accounts => {
       })
     })
   });
+
+  it('should let recipients withdraw', () => {
+    var currentBalances;
+    return Promise.all(recipients.map(web3.eth.getBalance))
+    .then(balances => {
+      currentBalances = balances;
+      return contractInstance.sendSplit(
+        recipients,
+        {from: sender, value: amountSent});
+    })
+    .then(txObj => {
+      return Promise.all(recipients.map(
+        recipient => contractInstance.withdraw({from: recipient})));
+    })
+    .then(txObjs => {
+      return Promise.all(recipients.map(web3.eth.getBalance));
+    })
+    .then(balances => {
+      for(let i in balances) {
+        assert.equal(
+          balances[i],
+          currentBalances[i],
+          "Recipient's balance was not appropriately credited");
+      }
+    });
+  });
 });
