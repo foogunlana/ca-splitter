@@ -33,11 +33,8 @@ contract('Splitter', accounts => {
   });
 
 // Add tests to check that error is thrown if not owner
-  it('should allow only owner set sender and recipients', () => {
-    return contractInstance.setRecipients(recipients, {from: owner})
-    .then(txObj => {
-      return contractInstance.setSender(sender, {from: owner})
-    })
+  it('should allow only owner set sender', () => {
+    return contractInstance.setSender(sender, {from: owner})
     .then(txObj => {
       return;
     });
