@@ -8,6 +8,8 @@ import { OwnedDestroyable } from './OwnedDestroyable.sol';
 */
 contract Splitter is OwnedDestroyable{
     address public sender;
+    address[2] public recipients;
+    uint public remainder;
     mapping (address => uint) public balances;
 
     event LogSetSender(address indexed _sender);
@@ -21,25 +23,16 @@ contract Splitter is OwnedDestroyable{
 
     function () payable {}
 
-    function Splitter(address _sender) {
+    function Splitter(address _sender, address[2] _recipients) {
         sender = _sender;
-    }
-
-    function setSender(address _sender)
-        public
-        onlyOwner
-        returns(bool) {
-
-        sender = _sender;
-        LogSetSender(_sender);
-        return true;
+        recipients = _recipients;
     }
 
     /*
       Should receive an ETH value and split it equally amongst all
       recipients
     */
-    function sendSplit(address[2] _recipients)
+    function sendSplit()
         public
         payable
         onlySender
@@ -47,10 +40,11 @@ contract Splitter is OwnedDestroyable{
 
         require(msg.value > 0);
         uint amountPerRecipient = msg.value / 2;
+        remainder = msg.value % 2;
         // figure straight up indexes are better than for loops for a small fixed length array
-        balances[_recipients[0]] = amountPerRecipient;
-        balances[_recipients[1]] = amountPerRecipient;
-        LogSplitSent(msg.sender, _recipients, amountPerRecipient);
+        balances[recipients[0]] = amountPerRecipient;
+        balances[recipients[1]] = amountPerRecipient;
+        LogSplitSent(msg.sender, recipients, amountPerRecipient);
         return true;
     }
 
