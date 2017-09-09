@@ -64,7 +64,6 @@ contract('Splitter', accounts => {
   beforeEach(() => {
     return Splitter.new(
       sender,
-      recipients,
       {from: owner})
     .then(instance => {
       contractInstance = instance;
@@ -87,17 +86,6 @@ contract('Splitter', accounts => {
         assert.equal(_sender, sender, "Sender was not set correctly");
       });
     });
-    it('should set the recipients', () => {
-      return Promise.all([
-        contractInstance.recipients.call(0),
-        contractInstance.recipients.call(1)])
-      .then(_recipients => {
-        assert.equal(
-          _recipients[0].valueOf(), recipients[0], "Recipient 1 was not set correctly");
-        assert.equal(
-          _recipients[1].valueOf(), recipients[1], "Recipient 2 was not set correctly");
-      });
-    });
   });
 
   it('should have no contract code after being destroyed', () => {
@@ -118,12 +106,14 @@ contract('Splitter', accounts => {
       var gasToUse = 5000000;
       return expectedExceptionPromise(function () {
         return contractInstance.sendSplit(
+          recipients,
           {from: owner, gas: gasToUse, value: amountSent})
         }, gasToUse);
     });
 
     it('should keep the balance sent by the sender', () => {
       return contractInstance.sendSplit(
+        recipients,
         {from: sender, value: amountSent})
         .then(txObj => {
           return web3.eth.getBalance(contractInstance.address)
@@ -136,8 +126,37 @@ contract('Splitter', accounts => {
       });
     });
 
+    it('should let the sender send multiple amounts before they are withdrawn', () => {
+      return Promise.all([
+        contractInstance.sendSplit(
+          recipients,
+          {from: sender, value: amountSent * 1}),
+        contractInstance.sendSplit(
+          recipients,
+          {from: sender, value: amountSent * 2}),
+        contractInstance.sendSplit(
+          recipients,
+          {from: sender, value: amountSent * 3})
+      ])
+      .then(txObj => {
+        Promise.all(
+          recipients.map(address => contractInstance.balances.call(address)))
+        .then(balances => {
+          assert.equal(
+            balances[0].valueOf(),
+            (amountSent * 3) + '',
+            "Half the amount sent was not stored for first recipient");
+          assert.equal(
+            balances[1].valueOf(),
+            (amountSent * 3) + '',
+            "Half the amount sent was not stored for second recipient");
+        });
+      });
+    });
+
     it('should split sent amount in 2 and keep the change', () => {
       return contractInstance.sendSplit(
+        recipients,
         {from: sender, value: amountSent + 1})
       .then(txObj => {
         Promise.all(
@@ -161,6 +180,7 @@ contract('Splitter', accounts => {
     it('should let recipients withdraw', () => {
       var currentBalance = web3.eth.getBalance(recipients[0])
       return contractInstance.sendSplit(
+        recipients,
         {from: sender, value: amountSent})
       .then(txObj => {
         return contractInstance.withdraw({from: recipients[0]});
