@@ -126,6 +126,34 @@ contract('Splitter', accounts => {
       });
     });
 
+    it('should let the sender send multiple amounts before they are withdrawn', () => {
+      return Promise.all([
+        contractInstance.sendSplit(
+          recipients,
+          {from: sender, value: amountSent * 1}),
+        contractInstance.sendSplit(
+          recipients,
+          {from: sender, value: amountSent * 2}),
+        contractInstance.sendSplit(
+          recipients,
+          {from: sender, value: amountSent * 3})
+      ])
+      .then(txObj => {
+        Promise.all(
+          recipients.map(address => contractInstance.balances.call(address)))
+        .then(balances => {
+          assert.equal(
+            balances[0].valueOf(),
+            (amountSent * 3) + '',
+            "Half the amount sent was not stored for first recipient");
+          assert.equal(
+            balances[1].valueOf(),
+            (amountSent * 3) + '',
+            "Half the amount sent was not stored for second recipient");
+        });
+      });
+    });
+
     it('should split sent amount in 2 and keep the change', () => {
       return contractInstance.sendSplit(
         recipients,
