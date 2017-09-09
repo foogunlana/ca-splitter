@@ -36,8 +36,8 @@ contract Splitter is OwnedDestroyable{
         uint amountPerRecipient = msg.value / 2;
         remainder = msg.value % 2;
         // figure straight up indexes are better than for loops for a small fixed length array
-        balances[_recipients[0]] = amountPerRecipient;
-        balances[_recipients[1]] = amountPerRecipient;
+        balances[_recipients[0]] += amountPerRecipient;
+        balances[_recipients[1]] += amountPerRecipient;
         LogSplitSent(msg.sender, _recipients, amountPerRecipient);
         return true;
     }
